@@ -1,4 +1,6 @@
 import asyncio
+from collections import defaultdict
+import json
 
 import django
 import websockets
@@ -11,6 +13,8 @@ django.setup()
 
 User = get_user_model()
 
+connections = defaultdict(set)
+
 def get_user(token):
     try:
         signer = TimestampSigner()
@@ -21,14 +25,26 @@ def get_user(token):
 
 async def handler(websocket):
     token = await websocket.recv()
-    print('Token:', token)
     user = await asyncio.to_thread(get_user, token)
-    print('User:', user)
     if user is None:
         await websocket.close(1011, "authentication failed")
         return
+    connections[user.username].add(websocket)
 
-    await websocket.send(f"Hello {user}!")
+    try:
+        async for message in websocket:
+            try:
+                event = json.loads(message)
+                if event['type'] == 'chat':
+                    # TODO: validate the fields, especially 'from'
+                    receivers = connections[event['to']] | connections[event['from']]
+                    websockets.broadcast(receivers, message)
+            except Exception:
+                pass
+    finally:
+        connections[user.username].discard(websocket)
+        if not connections[user.username]:
+            del connections[user.username]
 
 
 async def main():
