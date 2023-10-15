@@ -1,0 +1,11 @@
+body {
+  font-family: sans-serif;
+}
+
+header {
+  text-align: right;
+}
+
+.errorlist {
+  color: red;
+}

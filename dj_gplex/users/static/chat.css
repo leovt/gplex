@@ -1,0 +1,93 @@
+.chat-messages {
+  list-style-type: none;
+  padding: 2ex;
+  margin-bottom: 0;
+  overflow:hidden;
+  overflow-y:scroll;
+}
+
+.container {
+  display: flex;
+}
+
+.friends {
+  flex: 1;
+}
+
+.chat {
+  background-color: lightgrey;
+  flex: 2;
+}
+
+.chat form {
+  display: flex;
+  padding: 1ex;
+}
+
+.chat input{
+  flex: auto;
+}
+
+.chat button{
+  flex: 0;
+}
+
+
+.friend {
+  padding: 2ex;
+  background-color: grey;
+  margin-bottom: 1ex;
+}
+
+.friend.selected {
+  background-color: lightgrey;
+}
+
+.msg {
+  max-width: 70%;
+  padding: 1ex;
+  border: 2px solid;
+  border-radius: 5px;
+  display: inline-block;
+}
+
+.chat-messages li {
+  margin-bottom: 2ex;
+}
+
+li.right {
+  text-align: right;
+}
+
+li.right .msg {
+  background-color: lightgreen;
+  border-color: green;
+}
+
+li.left {
+  text-align: left;
+}
+li.left .msg {
+  background-color: lightyellow;
+  border-color: brown;
+}
+
+.timestamp {
+  font-size: smaller;
+}
+
+.friendlist {
+  list-style: none;
+  padding: 0;
+}
+
+.friend::before {
+  content: "\2022";  /* \2022 is the CSS Code/unicode for a bullet */
+  color: darkred;
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+.friend.online::before {
+  color: green;
+}
