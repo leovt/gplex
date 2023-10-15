@@ -7,6 +7,10 @@ from django.http import JsonResponse
 
 from .models import Profile
 
+def create_token(request):
+    signer = TimestampSigner()
+    return signer.sign(request.user.username)
+
 @login_required
 def dashboard(request):
     try:
@@ -17,10 +21,11 @@ def dashboard(request):
 
     return render(request, "users/dashboard.html", {
         'profile': profile,
+        'ws_auth_token': create_token(request),
     })
 
 @login_required
 def wstoken(request):
-    signer = TimestampSigner()
-    token = signer.sign(request.user.username)
-    return JsonResponse({"token": token})
+    return JsonResponse({
+        "ws_auth_token": create_token(request),
+    })

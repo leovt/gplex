@@ -34,9 +34,14 @@ Logged in as {{ user.username }}. <a href="{% url 'logout' %}">Logout</a> <a hre
     <form>
       <label for="sendmsg">Chat:</label>
       <input id="sendmsg"></input>
-      <button>Send</button>
+      <button id="sendbtn">Send</button>
     </form>
   </div>
 </div>
-
+<script>
+  WS_TOKEN_URL="{% url 'wstoken' %}";
+  WS_AUTH_TOKEN="{{ws_auth_token|safe}}";
+  USERNAME="{{user.username|safe}}"
+</script>
+<script src="{% static 'chat.js' %}"></script>
 {% endblock %}
